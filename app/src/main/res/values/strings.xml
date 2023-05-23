@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">API Project</string>
+
+    <string name="home_fragment">Your Number</string>
+</resources>
