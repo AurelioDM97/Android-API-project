@@ -37,18 +37,18 @@ class HomeFragment : Fragment() {
 
         binding.buttonHome.setOnClickListener() {
             //prende il testo e lo converte in int, dopodiciò toIntOrNull converte in un intero se possibile altrimenti restituisce null
-            val userInputNumber = binding.editTextHome.text.toString().toIntOrNull()
+            var userInputNumber = binding.editTextHome.text.toString().toIntOrNull()
             if (userInputNumber != null) {
                 coroutine.launch {// qui eseguiamo un operazione asincrona dopo la verifica dell'if se la conversione è avvenuta
                     delay(2000)
                     val nextNumber = when (currentUserNumber) {
-                        null -> userInputNumber + 1
+                        null -> userInputNumber!! + 1
                         else -> currentUserNumber!! + 1
                     }
                     withContext(Dispatchers.Main) { //chiamata che consente di eseguire il blocco di codice nel thread principale in modo più sicuro
                         binding.textHome.text = nextNumber.toString() //qui impostiamo il testo nel TextView
                     }
-                    currentUserNumber = nextNumber //qui salviamo il numero corrente per fare l'iterazione successiva e incrementare di 1 quel numero
+                    userInputNumber = nextNumber //qui salviamo il numero corrente per fare l'iterazione successiva e incrementare di 1 quel numero
                 }
             }
         }
