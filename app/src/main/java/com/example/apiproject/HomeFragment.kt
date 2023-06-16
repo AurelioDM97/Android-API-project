@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.apiproject.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +18,7 @@ import kotlinx.coroutines.withContext
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
-    private var currentUserNumber : Int? = null
-    private var coroutine = CoroutineScope(Dispatchers.Main)
+    private var currentUserNumber = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,18 +36,13 @@ class HomeFragment : Fragment() {
 
 
         binding.buttonHome.setOnClickListener() {
-
-            val userInputNumber = binding.editTextHome.text.toString().toIntOrNull()
-
-            if (userInputNumber != null) {
-                coroutine.launch {
-                    delay(2000)
-                    val nextNumber = when (currentUserNumber) {
-                        null -> userInputNumber + 1
-                        else -> currentUserNumber!! +1
-                    }
-                    binding.textHome.text = nextNumber.toString()
-                    currentUserNumber = nextNumber
+            lifecycleScope.launch {
+                delay(2000)
+                val inputNumber = binding.editTextHome.text.toString().toIntOrNull()
+                if (inputNumber != null) {
+                    currentUserNumber = inputNumber
+                    currentUserNumber++
+                    binding.textHome.text = currentUserNumber.toString()
                 }
             }
         }
